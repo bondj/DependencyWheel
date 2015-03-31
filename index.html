@@ -120,36 +120,36 @@ var chart = d3.chart.dependencyWheel()
   <script src="js/composerBuilder.js"></script>
   <script>
   var gitHubApiUrl = 'https://api.github.com/repos/';
-  var getData = function(target, callback) {
-    var responses = {
-      composerjson: null,
-      composerlock: null
-    };
-    var checkFinished = function() {
-      if (responses.composerjson && responses.composerlock) {
-        callback(responses.composerjson, responses.composerlock);
-      }
-    }
-    d3.xhr(gitHubApiUrl + target + '/contents/composer.json', 'application/vnd.github.VERSION.raw', function(err, composerjson) {
-      responses.composerjson = JSON.parse(composerjson.responseText);
-      checkFinished();
-    });
-    d3.xhr(gitHubApiUrl + target + '/contents/composer.lock', 'application/vnd.github.VERSION.raw', function(err, composerlock) {
-      responses.composerlock = JSON.parse(composerlock.responseText);
-      checkFinished();
-    });
-  };
 
   var chart = d3.chart.dependencyWheel();
 
-  d3.json('data/composer.json', function(composerjson) {
-    d3.json('data/composer.lock', function(composerlock) {
-      var data = buildMatrixFromComposerJsonAndLock(composerjson, composerlock);
+    var data = [{ name:'Container',require:['Logging','Doc DB','Load Balancer','SDN','Block Store','Service Proxy','Object Store','Monitoring Collection']}, 
+{name:'Doc DB', require:['Logging','Monitoring Collection']}, 
+{name:'Load Balancer',require:['Logging','Monitoring Collection']},
+{name:'SDN',require:['Logging','Monitoring Collection']},
+{name:'Block Store',require:['Logging','Monitoring Collection']},
+{name:'Service Proxy',require:['Logging','Monitoring Collection']},
+{name:'Object Store',require:['Logging','Monitoring Collection']},
+{name:'Logging',require:['Monitoring Collection','Event Bus']},
+{name:'Event Bus',require:['Logging','Monitoring Collection']},
+{name:'Monitoring Collection',require:['Logging','Event Bus']}
+	]
+
+    console.log(buildMatrixFromJson(data))
+
+d3.select('#chart_placeholder')
+        .datum(buildMatrixFromJson(data))
+	        .call(chart);
+
+
+    /*
+
+    d3.json('data/data.json', function(composerlock) {
+      var data = buildMatrixFromJson(composerlock);
       d3.select('#chart_placeholder')
         .datum(data)
         .call(chart);
-    });
-  });
+    });*/
 
   document.getElementById('composerRedraw').addEventListener('submit', function(e) {
     e.preventDefault();

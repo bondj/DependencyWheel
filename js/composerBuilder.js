@@ -1,4 +1,4 @@
-var buildMatrixFromComposerJson = function(json) {
+var buildMatrixFromJson = function(json) {
 
   var packages = json;
 
@@ -25,8 +25,14 @@ var buildMatrixFromComposerJson = function(json) {
      row = matrix[source] = [];
      for (var i = -1; ++i < n;) row[i] = 0;
     }
-    for (packageName in p.require) {
+    if (p.require!=null){
+    p.require.forEach( function(packageName) {
+	    console.log(indexByName)
+	  console.log(packageName)
+	  console.log(p.require)
+	    console.log(indexByName[packageName])
       row[indexByName[packageName]]++; 
+    });
     }
   });
 
