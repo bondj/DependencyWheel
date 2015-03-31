@@ -1,0 +1,1 @@
+[ {'name':'Container','requires':'Doc DB','Load Balancer','SDN','Block Store','Service Proxy','Object Store'}]
